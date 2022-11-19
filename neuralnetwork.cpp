@@ -10,9 +10,6 @@ int main() {
     layerSizes[1] = 16;
     layerSizes[2] = 2;
 
-    
-
-
     return 0;
 }
 
