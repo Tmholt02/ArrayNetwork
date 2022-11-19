@@ -18,24 +18,24 @@ int main() {
 
 class ArrayNetwork {
     private:
-        int layerCount;
-        int* layerSizes;
+        const int layerCount;
+        const int* layerSizes;
         int*** network;
         int* inputActivations;
     public:
-        ArrayNetwork(int& layerCount, int*& layerSizes);
+        ArrayNetwork(const int& layerCount, const int* layerSizes);
         void computeInput();
-        int getLayerCount();
-        int getLayerSize(int layerIdx);
-        double getActivation(int layerIdx, int neuronIdx);
-        double getBias(int layerIdx, int neuronIdx);
-        double getWeight(int layerIdx, int neuronIdx, int prevNeuronIdx);
-        void setActivation(int layerIdx, int neuronIdx, double activation);
-        void setBias(int layerIdx, int neuronIdx, double bias);
-        void setWeight(int layerIdx, int neuronIdx, int prevNeuronIdx, double weight);
+        int getLayerCount() const;
+        int getLayerSize(const int& layerIdx) const;
+        double getActivation(const int& layerIdx, const int& neuronIdx) const;
+        double getBias(const int& layerIdx, const int& neuronIdx) const;
+        double getWeight(const int& layerIdx, const int& neuronIdx, const int& prevNeuronIdx) const;
+        void setActivation(const int& layerIdx, const int& neuronIdx, const double& activation);
+        void setBias(const int& layerIdx, const int& neuronIdx, const double& bias);
+        void setWeight(const int& layerIdx, const int& neuronIdx, const int& prevNeuronIdx, const double& weight);
 };
 
-ArrayNetwork::ArrayNetwork(int& layerCount, int*& layerSizes): layerCount(layerCount), layerSizes(layerSizes) {
+ArrayNetwork::ArrayNetwork(const int& layerCount, const int* layerSizes): layerCount(layerCount), layerSizes(layerSizes) {
     
     // DATA!!!
     int*** network = new int**[layerCount - 1];
@@ -52,7 +52,7 @@ ArrayNetwork::ArrayNetwork(int& layerCount, int*& layerSizes): layerCount(layerC
 
             // Activation
             network[layer][neuron][0] = 0;
-
+            
             // Bias
             network[layer][neuron][1] = 0;
 
@@ -78,11 +78,11 @@ void ArrayNetwork::computeInput() {
     }
 }
 
-int ArrayNetwork::getLayerCount() {
+int ArrayNetwork::getLayerCount() const {
     return layerCount;
 }
 
-int ArrayNetwork::getLayerSize(int layerIdx) {
+int ArrayNetwork::getLayerSize(const int& layerIdx) const {
     if (0 <= layerIdx && layerIdx < layerCount) {
         return layerSizes[layerIdx];
     } else {
@@ -90,7 +90,7 @@ int ArrayNetwork::getLayerSize(int layerIdx) {
     }
 }
 
-double ArrayNetwork::getActivation(int layerIdx, int neuronIdx) {
+double ArrayNetwork::getActivation(const int& layerIdx, const int& neuronIdx) const {
     if (0 <= layerIdx && layerIdx < layerCount) {
         if (0 <= neuronIdx && neuronIdx < layerSizes[layerIdx]) {
             return layerIdx == 0
@@ -104,7 +104,7 @@ double ArrayNetwork::getActivation(int layerIdx, int neuronIdx) {
     }
 }
 
-double ArrayNetwork::getBias(int layerIdx, int neuronIdx) {
+double ArrayNetwork::getBias(const int& layerIdx, const int& neuronIdx) const {
     if (0 < layerIdx && layerIdx < layerCount) {
         if (0 <= neuronIdx && neuronIdx < layerSizes[layerIdx]) {
             return network[layerIdx - 1][neuronIdx][1];
@@ -116,7 +116,7 @@ double ArrayNetwork::getBias(int layerIdx, int neuronIdx) {
     }
 }
 
-double ArrayNetwork::getWeight(int layerIdx, int neuronIdx, int prevNeuronIdx) {
+double ArrayNetwork::getWeight(const int& layerIdx, const int& neuronIdx, const int& prevNeuronIdx) const {
     if (0 < layerIdx && layerIdx < layerCount) {
         if (0 <= neuronIdx && neuronIdx < layerSizes[layerIdx]) {
             if (0 <= neuronIdx && neuronIdx < layerSizes[layerIdx - 1]) {
@@ -132,7 +132,7 @@ double ArrayNetwork::getWeight(int layerIdx, int neuronIdx, int prevNeuronIdx) {
     }
 }
 
-void ArrayNetwork::setActivation(int layerIdx, int neuronIdx, double activation) {
+void ArrayNetwork::setActivation(const int& layerIdx, const int& neuronIdx, const double& activation) {
     if (0 <= layerIdx && layerIdx < layerCount) {
         if (0 <= neuronIdx && neuronIdx < layerSizes[layerIdx]) {
             if (layerIdx == 0) {
@@ -148,7 +148,7 @@ void ArrayNetwork::setActivation(int layerIdx, int neuronIdx, double activation)
     }
 }
 
-void ArrayNetwork::setBias(int layerIdx, int neuronIdx, double bias) {
+void ArrayNetwork::setBias(const int& layerIdx, const int& neuronIdx, const double& bias) {
     if (0 < layerIdx && layerIdx < layerCount) {
         if (0 <= neuronIdx && neuronIdx < layerSizes[layerIdx]) {
             network[layerIdx - 1][neuronIdx][1] = bias;
@@ -160,7 +160,7 @@ void ArrayNetwork::setBias(int layerIdx, int neuronIdx, double bias) {
     }
 }
 
-void ArrayNetwork::setWeight(int layerIdx, int neuronIdx, int prevNeuronIdx, double weight) {
+void ArrayNetwork::setWeight(const int& layerIdx, const int& neuronIdx, const int& prevNeuronIdx, const double& weight) {
     if (0 < layerIdx && layerIdx < layerCount) {
         if (0 <= neuronIdx && neuronIdx < layerSizes[layerIdx]) {
             if (0 <= neuronIdx && neuronIdx < layerSizes[layerIdx - 1]) {
