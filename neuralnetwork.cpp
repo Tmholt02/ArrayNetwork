@@ -21,6 +21,7 @@ class ArrayNetwork {
         int* inputActivations;
     public:
         ArrayNetwork(const int& layerCount, const int* layerSizes);
+        ~ArrayNetwork();
         void computeInput();
         int getLayerCount() const;
         int getLayerSize(const int& layerIdx) const;
@@ -54,11 +55,22 @@ ArrayNetwork::ArrayNetwork(const int& layerCount, const int* layerSizes): layerC
             network[layer][neuron][1] = 0;
 
             // Weights
-            for (int weight = 2; weight < layerSizes[layerSizes[layer - 1] + 2]; weight++) {
-                network[layer][neuron][2] = 0;
+            for (int weight = 2; weight < layerSizes[layer - 1] + 2; weight++) {
+                network[layer][neuron][weight] = 0;
             }
         }
     }
+}
+
+ArrayNetwork::~ArrayNetwork() {
+    for (int layerIdx = 1; layerIdx < layerCount; layerIdx++) {
+        for (int neuronIdx = 0; neuronIdx < layerSizes[layerIdx]; neuronIdx++) {
+            delete[] network[layerIdx][neuronIdx];
+        }
+        delete[] network[layerIdx];
+    }
+    delete[] network;
+    delete[] inputActivations;
 }
 
 void ArrayNetwork::computeInput() {
